@@ -1,0 +1,52 @@
+use ::BBjSampleWidget/BBjSampleWidget.bbj::BBjSampleWidget
+
+? 'HIDE'
+
+declare BBjTopLevelWindow       wnd!
+declare BBjSampleWidget         sampleWidget!
+declare auto BBjCustomEvent     ev!
+declare BBjStaticText           info!
+declare BBjColorChooser         colc!
+declare BBjColorChangeEvent     cev!
+declare auto BBjResizeEvent          rev!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,700,"BBj Sample Widget")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"on_resize")
+
+rem setting up our sample widget
+sampleWidget! = new BBjSampleWidget(wnd!,100,10,10,780,40)
+sampleWidget!.setCallback(BBjSampleWidget.ON_COUNTER_CLICKED(),"on_counter_clicked")
+
+rem setting up the other controls for the demo
+info! = wnd!.addStaticText(101,10,60,300,25,"")
+colc! = wnd!.addColorChooser(102,10,100,780,600)
+colc!.setControlButtonsAreShown(0)
+colc!.setCallback(colc!.ON_COLORCHOOSER_CHANGE,"on_color_change")
+
+process_events
+
+rem ON_CLOSE event handler
+byebye:
+    bye
+
+rem event handler for our sample widget
+on_counter_clicked:
+    ev! = BBjAPI().getLastEvent()
+    info!.setText("Button was clicked "+str(ev!.getObject())+" times.")
+return
+
+rem shows that you can use all methods in BBjControl
+rem and that they are prepared with some useful default behaviors in the
+rem BBjWidget base class
+rem note that setBackColor is nowhere implemented in BBjSampleWidget
+rem but served from the base class:
+on_color_change:
+    sampleWidget!.setBackColor(colc!.getColor())
+return
+
+rem resize event - resize our sample widget in width to demonstrate the redraw
+on_resize:
+    rev! = BBjAPI().getLastEvent()
+    sampleWidget!.setSize(rev!.getWidth()-20,40)
+return

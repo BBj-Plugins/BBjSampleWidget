@@ -1,0 +1,74 @@
+use ::BBjWidget/BBjWidget.bbj::BBjWidget
+
+rem /**
+rem  * A sample BBj Widget Implementation
+rem  */
+class public BBjSampleWidget extends BBjWidget
+
+    field private BBjButton btnClick!
+    field private BBjNumber clickCount
+    
+    rem --------------------- constructors -------------------------------------
+    
+    rem /**
+    rem  * disabled default constructor
+    rem  */
+    method private BBjSampleWidget()
+    methodend
+
+    rem /**
+    rem  * The constructor that creates the widget on wnd!
+    rem * @param BBjWindow wnd!: parent window
+    rem * @param BBjInt id: the control ID
+    rem * @param BBjInt x: x-location
+    rem * @param BBjInt y: y-location
+    rem * @param BBjInt w: width
+    rem * @param BBjInt h: height
+    rem */
+    method public BBjSampleWidget(BBjWindow wnd!, BBjInt id!, BBjInt x!, BBjInt y!, BBjInt w!, BBjInt h!)
+        #super!.create(wnd!,id!,x!,y!,w!,h!)
+    methodend
+    
+    rem --------------------- event constant(s) -------------------------------------
+    
+    rem /**
+    rem  * ON_COUNTER_CLICKED constant 100
+    rem  */
+    method public static BBjNumber ON_COUNTER_CLICKED()
+        methodret 100
+    methodend
+
+    rem ---------------------- methods from BBjWidget -------------------------------- 
+
+    rem /**
+    rem  * @Override
+    rem  * This method is called whenever the widget needs to be rendered
+    rem  * @param Boolean f_init!: if TRUE the control is rendered for the first time so this method has to perform initial rendering
+    rem  */
+    method public void redraw(Boolean f_init!)
+        if (f_init!) then
+            rem rendering for the first time
+            rem so have to initialize / create my controls
+            #btnClick! = #getCanvas().addButton(100,0,0,0,0,"Click me!")
+            #btnClick!.setCallback(BBjAPI.ON_BUTTON_PUSH,#this!,"onButtonClick")
+        FI
+
+        #btnClick!.setLocation(int((#getWidth()-150)/2),5)
+        #btnClick!.setSize(150,#getHeight()-10)
+        
+    methodend
+
+    rem ---------------------- Event Handlers --------------------------------
+
+    rem /**
+    rem  * onButtonClick
+    rem  * event handler to handle a click on the button
+    rem  * fires ON_COUNTER_CLICKED event
+    rem  */
+    method public void onButtonClick(BBjButtonPushEvent ev!)
+        #clickCount = #clickCount+1 
+        #btnClick!.setText("Clicked "+str(#clickCount)+" times.")
+        #fireEvent(#ON_COUNTER_CLICKED(),#clickCount)
+    methodend
+
+classend
