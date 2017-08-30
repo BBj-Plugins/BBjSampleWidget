@@ -3,6 +3,12 @@
 	"description":"",
 	"version": "1.0",
 	"author":"Basis",
-	"dependencies":[]
+	"plugin_dependencies":[
+								{
+									"plugin_name"    : "BBjWidget",
+									"plugin_version" : "master",
+									"project_url"    : "https://github.com/BBj-Plugins/BBjWidget"
+								}
+							]
 }
 
