@@ -1,6 +1,6 @@
 {
 	"name":"BBjSampleWidget",
-	"description":"",
+	"description":"A sample UI widget that shows how to write custom plug-in.",
 	"version": "1.0",
 	"author":"Basis",
 	"plugin_dependencies":[
